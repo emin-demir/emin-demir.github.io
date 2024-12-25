@@ -1,6 +1,6 @@
 ---
 title: "All Enumerating Subdomains Tools"
-date: 2024-03-21
+date: 2024-12-25
 categories: [Siber Güvenlik, Recon]
 tags: [subdomain, recon, enumeration, tools]
 ---
@@ -19,7 +19,7 @@ Aşağıda, yalnızca subdomain’leri sıralayan araçları, en beğendiğimden
 
 ### Nedir?
 
-Bir web sitesine ve cli aracına sahiptir. DNS veri setleri ile oluşturulmuş çok geniş kapsamlı subdomain tarayıcısıdır. Ayrıyeten nuclei, naabu, Cloud ile beraber çalışma özellikleri ile donatılmış bir araçtır. Benim için Tier 1 de olma sebebi ise çeşitli API veya brute-force gibi uğraşma olmadan çoğu aracın bulduğu subdomainlerden daha fazla subdomaini hazır olarak sunmasıdır. 
+Bir web sitesine ve cli aracına sahiptir. DNS veri setleri ile oluşturulmuş çok geniş kapsamlı subdomain tarayıcısıdır. Ayrıyeten nuclei, naabu, Cloud ile beraber çalışma özellikleri ile donatılmış bir araçtır. Benim için Tier 1 de olma sebebi ise çeşitli API veya brute-force gibi uğraşma olmadan çoğu aracın bulduğu subdomainlerden daha fazla subdomaini hazır olarak sunmasıdır.
 
 ### Ek bilgilendirme:
 
@@ -53,21 +53,19 @@ Bir web sitesine ve cli aracına sahiptir. DNS veri setleri ile oluşturulmuş �
 
 # **2. OneForAll:**
 
-### Nedir ?
+### Nedir?
 
-- 6 certificate Modülü, 6 baseline testing Modülleri,  2 web crawler Modülü, 25 DNS datasets Modülleri, 6 DNS queries modülü 6 Threat intelligence Modülü, 16 search engines modülü ile toplamda 67 adet modülü birleştiren Güçlü bir araçtır. Piyasada bulunan bütün modüllerin birleştirip ardından kullanımı basitleştirmeye çalışmak kadar zor bir şey yok ama adamlar bunu başarmışlar. Listede 2. sırada olmasının sebebi de bu. Diğer araçlara ihtiyacınız kalmıyor.
+6 certificate Modülü, 6 baseline testing Modülleri, 2 web crawler Modülü, 25 DNS datasets Modülleri, 6 DNS queries modülü 6 Threat intelligence Modülü, 16 search engines modülü ile toplamda 67 adet modülü birleştiren Güçlü bir araçtır. Piyasada bulunan bütün modüllerin birleştirip ardından kullanımı basitleştirmeye çalışmak kadar zor bir şey yok ama adamlar bunu başarmışlar. Listede 2. sırada olmasının sebebi de bu. Diğer araçlara ihtiyacınız kalmıyor.
 
 ### Artıları:
+- Çoklu Kaynak Taraması yaptığından en fazla veriyi sağlıyor
+- Diğer toollar'a yeterince güçlü, hızlı, kullanıcı dostu ve Sürekli Destek olmadığından dolayı bu tool geliştirilmiş
+- Python Kullanır, geliştirilebilir
 
-### Eksileri :
-
-- Çoklu Kaynak Taraması yaptığından en fazla veriyi sağlıyor.
-- Diğer toollar'a yeterince güçlü, hızlı, kullanıcı dostu ve Sürekli Destek olmadığından dolayı bu tool geliştirilmiş.
-- Python Kullanır. Geliştirilebilir.
-
-- API anahtarlarına ihtiyaç duyuyor.
-- Zaman açısından Bütün Modüller çalıştırıldığında çok verimsiz olabiliyor.
-- Servis değişirse Modülün güncellenmesi gerekiyor. Yoksa Hatalara sebebiyet verebiliyor.
+### Eksileri:
+- API anahtarlarına ihtiyaç duyuyor
+- Zaman açısından Bütün Modüller çalıştırıldığında çok verimsiz olabiliyor
+- Servis değişirse Modülün güncellenmesi gerekiyor, yoksa Hatalara sebebiyet verebiliyor
 
 | **Parametre** | **Açıklama** | **Örnek** |
 | --- | --- | --- |
@@ -93,17 +91,15 @@ Bir web sitesine ve cli aracına sahiptir. DNS veri setleri ile oluşturulmuş �
 Github API desteği ile github repolarını araştırarak ana domainin alt domainlerini bulmak için oluşturulmuş bir araçtır. Diğerlerinin aksine 2-3 aracı birleştirmek yerine kendisine özgü yapısıyla ortaya çıkıyor.
 
 ### Artıları:
+- Github API Tokeni kullanarak arama yapar, kodlarda herhangi bir subdomain referansı arar (config veya env gibi)
+- Sadece subdomainleri değil potansiyel kaynak dosyalarında raporluyor
+- Manuel olarak yapılamayacak bir hızda alakalı olan bütün repoları gezer ve geniş bir analiz yapar
+- Kolay Entegrasyon yapılabilir Pipe Line destekler
 
-### Eksileri :
-
-- Github API Tokeni kullanarak arama yapar. Kodlarda herhangi bir subdomain referansı arar.(config. veya env) gibi
-- Sadece subdomainleri değil potansiyel kaynak dosyalarında raporluyor.
-- Manuel olarak yapılamayacak bir hızda alakalı olan bütün repoları gezer ve geniş bir analiz yapar.
-- Kolay Entegrasyon yapılabilir Pipe Line destekler.
-
+### Eksileri:
 - Github API'sına ihtiyaç duyar
-- Sıkıntıları : API Günlük sınırı var. / Private Repolara bakamıyor / Hiç alakasız şeyleri subdomain olarak alabilir.
-- Verileri aldıktan sonra sağlam bir filtreleme gerekebilir saf veriyle işlem yapmak işleri zorlaştırabilir.
+- API Günlük sınırı var / Private Repolara bakamıyor / Hiç alakasız şeyleri subdomain olarak alabilir
+- Verileri aldıktan sonra sağlam bir filtreleme gerekebilir saf veriyle işlem yapmak işleri zorlaştırabilir
 
 | **Parametre** | **Açıklama** | **Örnek** |
 | --- | --- | --- |
@@ -351,7 +347,7 @@ GetAllUrls açıklamasıyla olan gau bir domain için çeşitli kaynaklardan Url
 | --- | --- | --- | --- | --- | --- |
 | `--blacklist` | Atlanacak uzantılar listesi | `gau --blacklist svg,png` | `--config` | Alternatif yapılandırma dosyası | `gau --config $HOME/.config/gau.toml` |
 | `--fc` | Filtrelenecek durum kodları listesi | `gau --fc 404,302` | `--from` | Tarihten itibaren URL çek | `gau --from 202101` |
-| `--ft` | Filtrelenecek MIME türleri listesi | `gau --ft text/plain` | `--fp` | Aynı endpoint'in farklı parametresini kaldır | `gau --fp` |
+| `--ft` | Filtrelenecek MIME türleri listesi | `gau --ft text/plain` | `--fp` | Aynı endpoint'in farklı parametresini kaldırır | `gau --fp` |
 | `--json` | Çıktıyı JSON formatında yazdır | `gau --json` | `--mc` | Eşleştirilecek durum kodları listesi | `gau --mc 200,500` |
 | `--mt` | Eşleştirilecek MIME türleri listesi | `gau --mt text/html/json` | `--o` | Sonuçların yazılacağı dosya | `gau --o out.txt` |
 | `--providers` | Kullanılacak sağlayıcılar  | `gau --providers wayback` | `--proxy` | Kullanılacak HTTP proxy | `gau --proxy http://proxy.com:8080` |
