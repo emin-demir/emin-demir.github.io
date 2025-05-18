@@ -1,3 +1,10 @@
+---
+title: "Cross-site scripting XSS el kitabı"
+date: 2025-05-18
+categories: [Siber Güvenlik, HandBook]
+tags: [XSS, Handbook, Learn]
+---
+
 ### Cross-site Scripting (XSS) Nedir?
 
 Cross-site scripting (XSS), web uygulamalarında görülen bir güvenlik açığıdır. Bu açık, saldırganların kurban kullanıcıyla uygulama arasındaki etkileşimi ele geçirmesine olanak tanır. XSS açıkları sayesinde saldırgan, kurban gibi davranabilir, onun yetkileriyle işlem yapabilir ve verilerine erişebilir. Eğer kurban kullanıcı uygulamada yetkili biriyse, saldırgan tüm sistemi ele geçirebilir.
