@@ -1,3 +1,10 @@
+---
+title: "SQL injection El kitabı"
+date: 2025-05-10
+categories: [Siber Güvenlik, HandBook]
+tags: [SQL injection, HandBook, Learn]
+---
+
 ## SQL injection nedir ? 
 Bir uygulamanın database'e erişim sağlayıp veri işlemi yapmak için yazdığı koda bir saldırganın araya girip kendi kodunu yazması, verilere erişebilme ve değiştirme fırsatı tanıyan bir zafiyet türüdür. Bazı durumlarda SQL injection ile server veya back-end'in tehlikeli durumlara yönlendirmesi veyahut ta dos saldırılarına sebep olabilmesidir.
 ## SQL açıkları nasıl tespit edilir ?
