@@ -2,7 +2,7 @@
 title: "SQL injection El kitabı"
 date: 2025-05-10
 categories: [Siber Güvenlik, HandBook]
-tags: [SQL injection, HandBook, Learn]
+tags: [sql injection, handbook, learn]
 ---
 
 ## SQL injection nedir ? 
