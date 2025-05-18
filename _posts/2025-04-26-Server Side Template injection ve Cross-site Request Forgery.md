@@ -1,3 +1,10 @@
+---
+title: "Server Side Template injection ve Cross-site Request Forgery"
+date: 2025-04-26
+categories: [Siber Güvenlik, HandBook]
+tags: [SSTI, CSTI, Handbook, Learn]
+---
+
 # Server Side Template İnjection Nedir ?
 SSTI zafiyetini tanımadan önce bilmemiz gereken bir şey var. Bu zafiyetin oluşmasındaki temel bileşen nedir?
 
