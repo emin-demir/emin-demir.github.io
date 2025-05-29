@@ -415,7 +415,7 @@ ERROR: invalid input syntax for type integer: "h66sntiqeof8m946yma1"
 		Evet. Mantıksal tabanlı sorgular burada da kullanılabilir örnek: `'AND 1=(CASE WHEN(1=1)THEN 1/0 ELSE 1 END)-`
 **Soru - 6) Hatayı siteye direkt yazdırıyor ise Başka saldırılara yol açabilir mi ?**
 		Evet. Filtrelemeden direkt yazdırdığı için XSS gibi zafiyetler çalışabiliyor.
-		`'AND (SELECT '<script>alert(2)</script>'::int)--`
+		{% raw %}`'AND (SELECT '&lt;script&gt;alert(2)&lt;/script&gt;'::int)--` {% endraw %}
 
 
 # Time‑Based Blind SQL Injection:
