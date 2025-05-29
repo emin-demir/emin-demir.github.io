@@ -97,7 +97,7 @@ SSTI zafiyetlerini önlemenin en etkili yolu, kullanıcı tarafından sağlanan 
 Ancak bazı iş gereksinimlerinden dolayı bu durum her zaman mümkün olmayabilir. Böyle senaryolarda, aşağıdaki önlemler alınarak riskler minimize edilebilir:
 
 - **Güvenli Şablon Kullanımı:** Şablon motoru, yalnızca geliştirici tarafından belirlenmiş değişkenleri işleyecek şekilde yapılandırılmalı ve kullanıcı girdileri asla doğrudan `render` işlemlerine sokulmamalıdır.
-- **Girdi Doğrulama ve Filtreleme:** Kullanıcıdan gelen tüm veriler, mümkünse beyaz liste yöntemiyle doğrulanmalı; şablon motoruna özel kontrol karakterleri (`{{`, `{%`, `<%` gibi) filtrelenmelidir.
+- **Girdi Doğrulama ve Filtreleme:** Kullanıcıdan gelen tüm veriler, mümkünse beyaz liste yöntemiyle doğrulanmalı; şablon motoruna özel kontrol karakterleri (`{{}}`, `{%}`, `<%>` gibi) filtrelenmelidir.
 - **Şablon Motoru Özelliklerinin Sınırlandırılması:** Kullanılmayan veya riskli işlevler (örneğin `eval`, `exec`, `system` gibi fonksiyonlara erişim) devre dışı bırakılmalıdır. Bazı motorlar güvenli modlar sunar.
 - **Uygulama İzolasyonu:** Web uygulaması, mümkünse ayrıcalıksız bir kullanıcı altında ve sınırlı yetkilere sahip bir ortamda çalıştırılmalıdır. En etkili yöntemlerden biri, uygulamayı bir **Docker kapsayıcısı** içinde çalıştırarak, yürütme ortamını izole etmektir. Böylece bir sömürü durumunda saldırının kapsayıcı dışına yayılması engellenmiş olur.
 - **Güncellemeler ve Güvenlik Yama Yönetimi:** Şablon motorları ve uygulama bağımlılıkları düzenli olarak güncellenmeli, bilinen zafiyetlere karşı yamalar uygulanmalıdır.
