@@ -16,19 +16,23 @@ SSTI zafiyetini tanımadan önce bilmemiz gereken bir şey var. Bu zafiyetin olu
 
 Örnek olarak bir Jinja2 şablon motorunda string alanını dinamik olarak nasıl değiştirebildiğimize bakalım:
 
-```Jinja2
+{% raw %}
+```jinja2
 Hello {{ name }}
 ```
+{% endraw %}
 
 Bu şablon sadece `name` verisini alır. Örneğin `name = "Ahmet"` olarak sağlandığında, şablon motoru bu değeri yerine yerleştirerek "Hello Ahmet" sonucunu üretir. Bu, temel bir şablon motoru kullanım örneğidir.
 
 Birçok modern şablon motoru yalnızca değer yerleştirmeyi değil; koşullar, döngüler gibi programlama dillerinin sunduğu daha karmaşık yapıları da destekler. Örneğin:
 
+{% raw %}
 ```Jinja2
 {% for name in names %}
 Hello {{ name }}!
 {% endfor %}
 ```
+{% endraw %}
 
 Eğer `names = ["vautia", "21y4d", "Pedant"]` şeklinde bir veri girilirse, şablon çıktısı şu şekilde olur:
 
@@ -50,10 +54,11 @@ Bu şekilde, şablon motorları sayesinde statik içerikler yerine dinamik olara
 Bir SSTI zafiyetinden faydalanmadan önce, bu zafiyetin gerçekten var olup olmadığını tespit etmek oldukça önemlidir. Ayrıca, sömürme süreci büyük ölçüde kullanılan şablon motoruna bağlıdır. Çünkü her şablon motoru farklı bir söz dizimi (syntax) kullanır. Bu nedenle, hedef uygulamanın hangi şablon motorunu kullandığını tespit etmek gerekir.
 
 Şablon motorunu tanımlamak için kullanılan yaygın yöntemlerden biri, hata mesajları tetikleyerek söz dizimi hakkında ipuçları edinmektir. Aşağıdaki gibi rastgele ancak tipik SSTI yapıları içeren bir test girdisiyle başlayabilirsiniz:
-
+{% raw %}
 ```Jinja2
 ${{<%[%'"}}%\.
 ```
+{% endraw %}
 
 SQL injection'da `'` karakteri nasıl test amacıyla kullanılıyorsa, SSTI'de de benzer şekilde özel karakterler veya yapılarla sistemin davranışı gözlemlenir. Eğer sunucu bu giriş karşısında bir hata (örneğin HTTP 500) döndürürse, SSTI'den şüphelenilebilir.
 
@@ -61,7 +66,7 @@ Bir diğer yaygın yöntem ise farklı şablon motorlarının söz dizimlerini k
 Aşağıda yer alan görselde, farklı şablon motorlarının nasıl yanıtlar ürettiğine dair bir karar ağacı gösterilmektedir:
 ![[Pasted image 20250429163208.png]]
 
-Örneğin; eğer `{{7*'7'}}` ifadesi 49 döndürüyorsa bu büyük olasılıkla Twig kullanıldığını gösterir. Ancak çıktı `7777777` ise, Jinja2 motoru kullanılıyor olabilir. Bu tür testler ile şablon motorunun türü belirlenebilir.
+Örneğin; eğer {% raw %} `{{7*'7'}}` {% endraw %} ifadesi 49 döndürüyorsa bu büyük olasılıkla Twig kullanıldığını gösterir. Ancak çıktı `7777777` ise, Jinja2 motoru kullanılıyor olabilir. Bu tür testler ile şablon motorunun türü belirlenebilir.
 
 
 ## Zafiyetin Sömürülmesi
@@ -75,7 +80,7 @@ Eğer çıktı "49" olarak dönerse, Uygulamanın hata vermesini sağlayarak ver
 
 ![[Pasted image 20250429180335.png]]
 Sistemin verdiği hata bakıp Ruby üzerinde çalıştığını anlıyoruz. aşağıdaki komut gibi bir kod parçası çalıştırılarak **uzaktan komut çalıştırma (RCE)** denenebilir:
-`<%= system("whoami") %> `
+{% raw %} `<%= system("whoami") %> ` {% endraw %}
 Bu şekilde sistemde çalışan kullanıcı bilgisi görüntülenebilir. Eğer bu komut başarılı olursa, saldırgan artık hedef sistem üzerinde keyfi komutlar çalıştırabilir, zararlı yazılım yükleyebilir veya kalıcı erişim sağlayabilir.
 
 ### SSTI Zafiyetinin Etkileri
@@ -97,7 +102,7 @@ SSTI zafiyetlerini önlemenin en etkili yolu, kullanıcı tarafından sağlanan 
 Ancak bazı iş gereksinimlerinden dolayı bu durum her zaman mümkün olmayabilir. Böyle senaryolarda, aşağıdaki önlemler alınarak riskler minimize edilebilir:
 
 - **Güvenli Şablon Kullanımı:** Şablon motoru, yalnızca geliştirici tarafından belirlenmiş değişkenleri işleyecek şekilde yapılandırılmalı ve kullanıcı girdileri asla doğrudan `render` işlemlerine sokulmamalıdır.
-- **Girdi Doğrulama ve Filtreleme:** Kullanıcıdan gelen tüm veriler, mümkünse beyaz liste yöntemiyle doğrulanmalı; şablon motoruna özel kontrol karakterleri (`{{}}`, `{%}`, `<%>` gibi) filtrelenmelidir.
+- **Girdi Doğrulama ve Filtreleme:** Kullanıcıdan gelen tüm veriler, mümkünse beyaz liste yöntemiyle doğrulanmalı; şablon motoruna özel kontrol karakterleri {% raw %}(`{{`, `{%=`, `<%` gibi) {% endraw %}filtrelenmelidir.
 - **Şablon Motoru Özelliklerinin Sınırlandırılması:** Kullanılmayan veya riskli işlevler (örneğin `eval`, `exec`, `system` gibi fonksiyonlara erişim) devre dışı bırakılmalıdır. Bazı motorlar güvenli modlar sunar.
 - **Uygulama İzolasyonu:** Web uygulaması, mümkünse ayrıcalıksız bir kullanıcı altında ve sınırlı yetkilere sahip bir ortamda çalıştırılmalıdır. En etkili yöntemlerden biri, uygulamayı bir **Docker kapsayıcısı** içinde çalıştırarak, yürütme ortamını izole etmektir. Böylece bir sömürü durumunda saldırının kapsayıcı dışına yayılması engellenmiş olur.
 - **Güncellemeler ve Güvenlik Yama Yönetimi:** Şablon motorları ve uygulama bağımlılıkları düzenli olarak güncellenmeli, bilinen zafiyetlere karşı yamalar uygulanmalıdır.
